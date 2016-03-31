@@ -1,9 +1,23 @@
 #!/bin/bash
 
+if [ $# -gt 0 ]; then
+        if [ "$1" == "--trustme" ]; then
+                MY_KUBERNETES_HOST=$2
+                MY_KUBERNETES_PORT=$3
+        else
+                echo Invalid usage, try again...
+                exit 0
+        fi
+else
+        MY_KUBERNETES_HOST="127.0.0.1"
+        MY_KUBERNETES_PORT="8080"
+fi
+MY_KUBECTL_PARAMS="--server=$MY_KUBERNETES_HOST:$MY_KUBERNETES_PORT"
+
 this_dir=$(cd -P "$(dirname "$0")" && pwd)
 
 echo "Removing replication controllers, services, pods and secrets..."
-kubectl delete replicationcontrollers,services,pods,secrets --all
+kubectl $MY_KUBECTL_PARAMS delete replicationcontrollers,services,pods,secrets --all
 if [ $? != 0 ]; then
     echo "Kubernetes already down?"
 fi

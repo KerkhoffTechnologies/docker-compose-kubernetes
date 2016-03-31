@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl create -f - << EOF
+kubectl $MY_KUBECTL_PARAMS create -f - << EOF
 kind: Namespace
 apiVersion: v1
 metadata:

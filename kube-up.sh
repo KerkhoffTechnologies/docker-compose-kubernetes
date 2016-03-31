@@ -2,6 +2,23 @@
 
 set -e
 
+if [ $# -gt 0 ]; then
+        if [ "$1" == "--trustme" ]; then
+                MY_KUBERNETES_HOST=$2
+                MY_KUBERNETES_PORT=$3
+        else
+                echo Invalid usage, try again...
+                exit 0
+        fi
+else
+        MY_KUBERNETES_HOST="127.0.0.1"
+        MY_KUBERNETES_PORT="8080"
+fi
+MY_KUBECTL_PARAMS="--server=$MY_KUBERNETES_HOST:$MY_KUBERNETES_PORT"
+export MY_KUBECTL_PARAMS=$MY_KUBECTL_PARAMS
+
+echo Working with $MY_KUBECTL_PARAMS
+
 require_command_exists() {
     command -v "$1" >/dev/null 2>&1 || { echo "$1 is required but is not installed. Aborting." >&2; exit 1; }
 }
